@@ -93,7 +93,7 @@ const scoringAlgorithms = [
 ];
 
 
-function scorerPrompt() {
+function scorerPrompt(word) {
 
    console.log(`Which scoring algorithm would you like to use? \n`);
    console.log(`0 - ${scoringAlgorithms[0].name}: ${scoringAlgorithms[0].description}`);
@@ -104,13 +104,12 @@ function scorerPrompt() {
    prompt = parseInt(prompt);
 
    if (prompt === 0 || prompt === 1 || prompt === 2) {
-      let word = initialPrompt();
       let score = scoringAlgorithms[prompt].scorerFunction(word); // Calculate score using selected scorerFunction
       console.log(`Score for ${word}: ${score}`);
    } else {
       console.log(`Invalid input. Please enter 0, 1, or 2.`);
    }
-   return prompt;
+   // return word; do i need this?
 }
 
  
@@ -118,8 +117,8 @@ function scorerPrompt() {
 function transform() {};
 
 function runProgram() {
-   initialPrompt();
-   scorerPrompt();
+   let word = initialPrompt();
+   scorerPrompt(word);
 }
 
 // Don't write any code below this line //
