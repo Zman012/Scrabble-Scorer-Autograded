@@ -2,6 +2,7 @@
 
 const input = require("readline-sync");
 
+
 const oldPointStructure = {
   1: ['A', 'E', 'I', 'O', 'U', 'L', 'N', 'R', 'S', 'T'],
   2: ['D', 'G'],
@@ -11,6 +12,7 @@ const oldPointStructure = {
   8: ['J', 'X'],
   10: ['Q', 'Z']
 };
+
 
 function oldScrabbleScorer(word) {
 	word = word.toUpperCase();
@@ -38,10 +40,10 @@ function initialPrompt(word) {
    console.log("Let's play some scrabble!"); //added
    word = input.question(`\nEnter a word to score: `) //added
 
-   let scoredword = oldScrabbleScorer(word) //added
+   // let scoredword = oldScrabbleScorer(word) //added
    // console.log(scoredword);
    
-   return scoredword //modified
+   return word //modified
 };
 
 
@@ -60,7 +62,7 @@ let vowelBonusScorer = function(word) {
    let score = 0;
    const vowels = [ 'A','E','I','O','U' ];
    for (let i = 0; i < word.length; i ++) {
-      let letter = word[i];
+      let letter = word[i].toUpperCase();
       if (vowels.includes(letter)) {
          score += 3;
       } else {
@@ -77,38 +79,41 @@ let scrabbleScorer;
 
 const scoringAlgorithms = [
    {name: "Simple", 
-   "description": "Each letter is worth 1 point.",
-   "scorerFunction": simpleScorer},
+   description: "Each letter is worth 1 point.",
+   scorerFunction: simpleScorer
+},
 
-   {"name": "Bonus Vowels", 
-   "description": "Vowels are 3 pts, consonants are 1 point",
-   "scorerFunction": vowelBonusScorer},
+   {name: "Bonus Vowels", 
+   description: "Vowels are 3 pts, consonants are 1 point",
+   scorerFunction: vowelBonusScorer},
 
-   {"name": "Scrabble",
-   "description": "The Traditional scoring algorithm",
-   "scorerFunction": oldScrabbleScorer} //anonymous function based off variable - drop the ()
+   {name: "Scrabble",
+   description: "The Traditional scoring algorithm",
+   scorerFunction: oldScrabbleScorer} //anonymous function based off variable - drop the ()
 ];
-// console.log(scoringAlgorithms[1].name);
-function scorerPrompt(prompt) {
-   console.log(`Which scoring algorithm would you like to use? \n`); 
+
+
+function scorerPrompt() {
+
+   console.log(`Which scoring algorithm would you like to use? \n`);
    console.log(`0 - ${scoringAlgorithms[0].name}: ${scoringAlgorithms[0].description}`);
    console.log(`1 - ${scoringAlgorithms[1].name}: ${scoringAlgorithms[1].description}`);
    console.log(`2 - ${scoringAlgorithms[2].name}: ${scoringAlgorithms[2].description}`);
 
-   for (let i = 0; scoringAlgorithms.length; i++){
-      prompt = input.question(`Enter 0, 1, or 2: `)
-      if (prompt === 0) {
-         let word = scoringAlgorithms[0].scorerFunction;
-         console.log(`Score for '${initialPrompt(word)}: `); //console.log ` `
-      }
-         
-      return prompt; //?
+   let prompt = input.question(`Enter 0, 1, or 2: `);
+   prompt = parseInt(prompt);
 
- }
+   if (prompt === 0 || prompt === 1 || prompt === 2) {
+      let word = initialPrompt();
+      let score = scoringAlgorithms[prompt].scorerFunction(word); // Calculate score using selected scorerFunction
+      console.log(`Score for ${word}: ${score}`);
+   } else {
+      console.log(`Invalid input. Please enter 0, 1, or 2.`);
+   }
+   return prompt;
 }
- 
- 
 
+ 
 
 function transform() {};
 
