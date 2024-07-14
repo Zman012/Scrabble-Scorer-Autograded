@@ -49,6 +49,7 @@ function initialPrompt(word) {
 
 
 let newPointStructure = transform(oldPointStructure);
+// console.log(newPointStructure);
 
 let simpleScorer = function(word) {
    let score = 0
@@ -77,20 +78,17 @@ let vowelBonusScorer = function(word) {
 // console.log(vowelBonusScorer("banana"))
 
 let scrabbleScorer = function(word) {
-   word = word.toUpperCase();
+   word = word.toUpperCase(); //uniformity
    let score = 0;
 
    for (let i = 0; i < word.length; i++) {
-       let letter = word[i].toLowerCase(); // Convert letter to lowercase
-       let letterScore = newPointStructure[letter];
+       let letter = word[i].toLowerCase(); // Convert letter to lowercase to match keys
+       let letterScore = newPointStructure[letter]; //retrieves the score for the current letter
 
        console.log(`Letter '${letter.toUpperCase()}' score: ${letterScore}`);
+       score += letterScore;
 
-       if (typeof letterScore !== 'undefined') {
-           score += letterScore;
-       } else {
-           console.log(`Letter '${letter.toUpperCase()}' not found in newPointStructure.`);
-       }
+       
    }
 
    return score;
@@ -131,26 +129,28 @@ function scorerPrompt(word) {
    } else {
       console.log(`Invalid input. Please enter 0, 1, or 2.`);
    }
-   // return word; Do i really want to return prompt # or word?
+   // return word; 
 }
 // console.log(scorerPrompt("Banana"))
 
 function transform(oldStructure) {
-   let newStructure = {}; //intialize an empty array to hold transformed data 
-                           //Rememeber... Key can be in variable name - the for in loop iterates over the key:value pairs in the oldStructure (or tin this case the oldPointStructure)
-   for (let key in oldStructure) {  // iterating over each key in the oldStructure objected
-       let lettersArray = oldStructure[key]; //we know its an array - each key in oldStructure contains the array of letters associated with that key
-       lettersArray.forEach(letter => {
-           newStructure[letter.toLowerCase()] = parseInt(key); //keys of objects are typically strings - ensures key is stored as an integer
-       });
+   let newStructure = {};  // Initialize an empty object to hold transformed data
+                           
+   for (let key in oldStructure) {       // Iterate over each key in the oldStructure object
+       let lettersArray = oldStructure[key]; // Get the array of letters associated with the current key
+       for (let i = 0; i < lettersArray.length; i++) { // Iterate through each letter in the lettersArray
+         let letter = lettersArray[i];
+         newStructure[letter.toLowerCase()] = parseInt(key); // Convert key to integer and assign as value in newStructure
+       };
    }
 
    return newStructure;
 }
 
+
 function runProgram() {
-   // let word = initialPrompt();
-   // scorerPrompt(word);
+   let word = initialPrompt();
+   scorerPrompt(word);
 }
 
 // Don't write any code below this line //
