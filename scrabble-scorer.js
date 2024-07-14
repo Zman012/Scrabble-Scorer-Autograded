@@ -14,6 +14,7 @@ const oldPointStructure = {
 };
 
 
+
 function oldScrabbleScorer(word) {
 	word = word.toUpperCase();
 	let letterPoints = "";
@@ -32,6 +33,9 @@ function oldScrabbleScorer(word) {
 	return letterPoints;
  }
 
+//  initialPrompt();
+// console.log(oldScrabbleScorer("Banana"));
+
  // your job is to finish writing these functions and variables that we've named //
 // don't change the names or your program won't work as expected. //
 
@@ -39,15 +43,12 @@ function initialPrompt(word) {
 
    console.log("Let's play some scrabble!"); //added
    word = input.question(`\nEnter a word to score: `) //added
-
-   // let scoredword = oldScrabbleScorer(word) //added
-   // console.log(scoredword);
    
    return word //modified
 };
 
 
-let newPointStructure;
+let newPointStructure = transform(oldPointStructure);
 
 let simpleScorer = function(word) {
    let score = 0
@@ -56,13 +57,14 @@ let simpleScorer = function(word) {
    }
    return score;
 };
+
 // console.log(simpleScorer("Astrix"))
 
 let vowelBonusScorer = function(word) {
    let score = 0;
    const vowels = [ 'A','E','I','O','U' ];
    for (let i = 0; i < word.length; i ++) {
-      let letter = word[i].toUpperCase();
+      let letter = word[i].toUpperCase(); //uppercase to match the A E I O U 
       if (vowels.includes(letter)) {
          score += 3;
       } else {
@@ -72,10 +74,28 @@ let vowelBonusScorer = function(word) {
     return score;
 }
 
-// vowelBonusScorer("babe")
-// console.log(vowelBonusScorer("Hello"));
+// console.log(vowelBonusScorer("banana"))
 
-let scrabbleScorer;
+let scrabbleScorer = function(word) {
+   word = word.toUpperCase();
+   let score = 0;
+
+   for (let i = 0; i < word.length; i++) {
+       let letter = word[i].toLowerCase(); // Convert letter to lowercase
+       let letterScore = newPointStructure[letter];
+
+       console.log(`Letter '${letter.toUpperCase()}' score: ${letterScore}`);
+
+       if (typeof letterScore !== 'undefined') {
+           score += letterScore;
+       } else {
+           console.log(`Letter '${letter.toUpperCase()}' not found in newPointStructure.`);
+       }
+   }
+
+   return score;
+};
+
 
 const scoringAlgorithms = [
    {name: "Simple", 
@@ -89,7 +109,7 @@ const scoringAlgorithms = [
 
    {name: "Scrabble",
    description: "The Traditional scoring algorithm",
-   scorerFunction: oldScrabbleScorer} //anonymous function based off variable - drop the ()
+   scorerFunction: scrabbleScorer} //dropped the oldScrabbleScorer and replaced with scrabbleScorer
 ];
 
 
@@ -99,9 +119,11 @@ function scorerPrompt(word) {
    console.log(`0 - ${scoringAlgorithms[0].name}: ${scoringAlgorithms[0].description}`);
    console.log(`1 - ${scoringAlgorithms[1].name}: ${scoringAlgorithms[1].description}`);
    console.log(`2 - ${scoringAlgorithms[2].name}: ${scoringAlgorithms[2].description}`);
+   
 
-   let prompt = input.question(`Enter 0, 1, or 2: `);
-   prompt = parseInt(prompt);
+   let prompt = input.question('Enter 0, 1, or 2: ');
+   prompt = parseInt(prompt); //converts argument to a string, parses that string, returns as an integer - is its own function
+   //alternative using Number to change the value 
 
    if (prompt === 0 || prompt === 1 || prompt === 2) {
       let score = scoringAlgorithms[prompt].scorerFunction(word); // Calculate score using selected scorerFunction
@@ -109,16 +131,26 @@ function scorerPrompt(word) {
    } else {
       console.log(`Invalid input. Please enter 0, 1, or 2.`);
    }
-   // return word; do i need this?
+   // return word; Do i really want to return prompt # or word?
+}
+// console.log(scorerPrompt("Banana"))
+
+function transform(oldStructure) {
+   let newStructure = {}; //intialize an empty array to hold transformed data 
+                           //Rememeber... Key can be in variable name - the for in loop iterates over the key:value pairs in the oldStructure (or tin this case the oldPointStructure)
+   for (let key in oldStructure) {  // iterating over each key in the oldStructure objected
+       let lettersArray = oldStructure[key]; //we know its an array - each key in oldStructure contains the array of letters associated with that key
+       lettersArray.forEach(letter => {
+           newStructure[letter.toLowerCase()] = parseInt(key); //keys of objects are typically strings - ensures key is stored as an integer
+       });
+   }
+
+   return newStructure;
 }
 
- 
-
-function transform() {};
-
 function runProgram() {
-   let word = initialPrompt();
-   scorerPrompt(word);
+   // let word = initialPrompt();
+   // scorerPrompt(word);
 }
 
 // Don't write any code below this line //
