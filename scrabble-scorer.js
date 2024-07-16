@@ -85,7 +85,7 @@ let scrabbleScorer = function(word) {
        let letter = word[i].toLowerCase(); // Convert letter to lowercase to match keys
        let letterScore = newPointStructure[letter]; //retrieves the score for the current letter
 
-       console.log(`Letter '${letter.toUpperCase()}' score: ${letterScore}`);
+      //  console.log(`Letter '${letter.toUpperCase()}' score: ${letterScore}`);
        score += letterScore;
 
        
