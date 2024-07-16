@@ -69,7 +69,7 @@ let vowelBonusScorer = function(word) {
       if (vowels.includes(letter)) {
          score += 3;
       } else {
-            score += 1;
+         score += 1;
          }
     }
     return score;
@@ -98,8 +98,7 @@ let scrabbleScorer = function(word) {
 const scoringAlgorithms = [
    {name: "Simple", 
    description: "Each letter is worth 1 point.",
-   scorerFunction: simpleScorer
-},
+   scorerFunction: simpleScorer},
 
    {name: "Bonus Vowels", 
    description: "Vowels are 3 pts, consonants are 1 point",
@@ -127,7 +126,7 @@ function scorerPrompt(word) {
       let score = scoringAlgorithms[prompt].scorerFunction(word); // Calculate score using selected scorerFunction
       console.log(`Score for ${word}: ${score}`);
    } else {
-      console.log(`Invalid input. Please enter 0, 1, or 2.`);
+      console.log(`Invalid input. Please enter 0, 1, or 2.`); //do while loop for looping back through
    }
    // return word; 
 }
@@ -146,6 +145,7 @@ function transform(oldStructure) {
 
    return newStructure;
 }
+
 
 
 function runProgram() {
